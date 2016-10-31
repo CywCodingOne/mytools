@@ -1,5 +1,6 @@
 package com.one.tools.str;
 
+
 import com.one.tools.exception.ParamNullException;
 
 /**
@@ -11,7 +12,7 @@ public class StringUtils {
 
 	/**
 	 * @description whether param string is null or length==0
-	 * @param 
+	 * @param String
 	 * @return true,if, is null or length()==0 
 	 */
 	public static boolean isEmpty(String string){
