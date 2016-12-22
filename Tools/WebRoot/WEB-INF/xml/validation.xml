@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validation>
+	<clazzName name="class1">
+		<field name="filed1">
+			<required>true</required>
+			<required-msg>该字段不能为空</required-msg>
+			<maxLength>300</maxLength>
+			<maxLength-msg>该字段长度超过限制</maxLength-msg>
+			<expression><![CDATA[[a-zA-Z0-9_]{1,10}]]></expression>
+			<expression-msg>字段格式错误</expression-msg>
+		</field>
+	</clazzName>
+</validation>

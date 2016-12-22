@@ -8,10 +8,10 @@ package com.one.tools.exception;
 public class ParamNullException extends Exception{
 	public ParamNullException() {
 		// TODO Auto-generated constructor stub
-		this("	ParamNullException: null param is illegal !");
+		this("ParamNullException: null param is illegal !");
 	}
 	
 	public ParamNullException(String msg){
-		super(msg);
+		super("" + msg);
 	}
 }
