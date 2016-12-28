@@ -1,0 +1,12 @@
+<Validation>
+	<nameSpacepace name="namespace1">
+		<className name="class1">
+			<filed name="filed1">
+				<required>true</required>
+				<required-msg>该字段不能为空</required-msg>
+				<maxLength>300</maxLength>
+				<maxLength-msg>该字段长度超过限制</maxLength-msg>
+			</filed>
+		</className>
+	</nameSpacepace>
+</Validation>

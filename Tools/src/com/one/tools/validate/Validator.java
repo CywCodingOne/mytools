@@ -60,7 +60,7 @@ public class Validator implements IValidator{
                 checkField(alias + "." + field, getProperty(object, field));
             }
         }catch (paraValidateException pve){
-        	logger.error("field illegal: " + pve.getMessage());
+        	logger.error("field illegal: '" + pve.getCode() + "'-" + pve.getMessage());
         	message.setReturnCode(pve.getCode());
         	message.setErrorMessage(pve.getMessage());
         }catch (Exception e)
@@ -138,29 +138,125 @@ public class Validator implements IValidator{
 	
 	private static void checkLength(String alias, Object object, CheckObj checkObj) throws paraValidateException{
 		String maxLength = checkObj.getMaxlength();
-		// 长度校验
-        if (null != maxLength && !"".equals(maxLength))
-        {
-        	Long length;
-        	try {
-        		length = Long.valueOf(maxLength);
-			} catch (Exception e) {
-				// TODO: handle exception
-				length = new Long(-1);
-				logger.error("the 'maxLength' declaration of " + alias + "is illegal, please check it !");
-				throw new paraValidateException(ExpConstants.FIELD_CHECK_ERROR, e);
+		// 如果没有指定长度或者字段数据为空，则不校验
+		if (null == maxLength || "".equals(maxLength) || null == object) {
+			return;
+		}
+		
+		Long length;
+    	try {
+    		length = Long.valueOf(maxLength);
+		} catch (Exception e) {
+			// TODO: handle exception
+			length = new Long(-1);
+			logger.error("the 'maxLength' declaration of " + alias + "is illegal, please check it !");
+			throw new paraValidateException(ExpConstants.FIELD_CHECK_ERROR, e);
+		}
+    	
+    	//如果指定长度不合法，则不校验
+    	if (0 >= length.longValue()) {
+			return;
+		}
+    	if (object instanceof String) {
+    		if (length.longValue() >= ((String)object).length()) {
+				return;
 			}
-        	if (0 < length.longValue() && null != object && !"".equals(object) && length.longValue() < String.valueOf(object).length()) {
-        		if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
-                {
-                    throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
-                }
-                else
-                {
-                	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
-                }
+    		if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Long) {
+			if (length.longValue() >= ("" + (Long)object).length()) {
+				return;
 			}
-        }
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Integer) {
+			if (length.longValue() >= ("" + (Integer)object).length()) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Character) {
+			if (length.longValue() >= ("" + (Character)object).length()) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Float) {
+			if (length.longValue() >= ("" + (Float)object).length()) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Double) {
+			if (length.longValue() >= ("" + (Double)object).length()) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof List) {
+			if (length.longValue() >= ((List)object).size()) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Map) {
+			if (length.longValue() >= ((Map)object).size()) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}else if (object instanceof Object[]) {
+			if (length.longValue() >= ((Object[])object).length) {
+				return;
+			}
+			if (null != checkObj.getMaxlengthMsg() && !"".equals(checkObj.getMaxlengthMsg()))
+            {
+                throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, checkObj.getMaxlengthMsg());
+            }else
+            {
+            	throw new paraValidateException(ExpConstants.OVER_LENGTH_FIELD_ERROR, ExpConstants.OVER_LENGTH_FIELD_MSG + ": '" + alias +"'");
+            }
+		}
 	}
 	
 	private static void checkDataType(String alias, Object object, CheckObj checkObj) throws paraValidateException{
@@ -169,72 +265,107 @@ public class Validator implements IValidator{
 		}
 		
 		String datatype = checkObj.getDatatype();
-		if ("String".equalsIgnoreCase(datatype) && !(object instanceof String)) {
+		if ("String".equalsIgnoreCase(datatype)) {
+			if (object instanceof String) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("Date".equalsIgnoreCase(datatype)) && !(object instanceof Date)) {
+		}else if ("Date".equalsIgnoreCase(datatype)) {
+			if (object instanceof Date) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("int".equalsIgnoreCase(datatype) || "Integer".equalsIgnoreCase(datatype)) && !(object instanceof Integer)) {
+		}else if ("int".equalsIgnoreCase(datatype) || "Integer".equalsIgnoreCase(datatype)) {
+			if (object instanceof Integer) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("long".equalsIgnoreCase(datatype)) && !(object instanceof Long)) {
+		}else if ("long".equalsIgnoreCase(datatype)) {
+			if (object instanceof Long) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("float".equalsIgnoreCase(datatype)) && !(object instanceof Float)) {
+		}else if ("float".equalsIgnoreCase(datatype)) {
+			if (object instanceof Float) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("double".equalsIgnoreCase(datatype)) && !(object instanceof Double)) {
+		}else if ("double".equalsIgnoreCase(datatype)) {
+			if (object instanceof Double) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("boolean".equalsIgnoreCase(datatype)) && !(object instanceof Boolean)) {
+		}else if ("boolean".equalsIgnoreCase(datatype)) {
+			if (object instanceof Boolean) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("char".equalsIgnoreCase(datatype) || "Character".equalsIgnoreCase(datatype)) && !(object instanceof Character)) {
+		}else if ("char".equalsIgnoreCase(datatype) || "Character".equalsIgnoreCase(datatype)) {
+			if (object instanceof Character) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("List".equalsIgnoreCase(datatype) || "ArrayList".equalsIgnoreCase(datatype) || "LinkedList".equalsIgnoreCase(datatype)) && !(object instanceof List)) {
+		}else if ("List".equalsIgnoreCase(datatype) || "ArrayList".equalsIgnoreCase(datatype) || "LinkedList".equalsIgnoreCase(datatype)) {
+			if (object instanceof List) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("Map".equalsIgnoreCase(datatype) || "HashMap".equalsIgnoreCase(datatype) || "TreeMap".equalsIgnoreCase(datatype)) && !(object instanceof Map)) {
+		}else if ("Map".equalsIgnoreCase(datatype) || "HashMap".equalsIgnoreCase(datatype) || "TreeMap".equalsIgnoreCase(datatype)) {
+			if (object instanceof Map) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
-		}else if (("array".equalsIgnoreCase(datatype) || (null != datatype && datatype.endsWith("[]"))) && !(object instanceof Object[])) {
+		}else if ("array".equalsIgnoreCase(datatype) || (null != datatype && datatype.endsWith("[]"))) {
+			if (object instanceof Object[]) {
+				return;
+			}
 			if (null != checkObj.getDatatypeMsg() && !"".equals(checkObj.getDatatypeMsg())) {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, checkObj.getDatatypeMsg());
 			}else {
 				throw new paraValidateException(ExpConstants.DATATYPE_MATCH_ERROR, ExpConstants.DATATYPE_MATCH_MSG + ": '" + alias +"'");
 			}
+		}else {
+			throw new paraValidateException(ExpConstants.DATATYPE_NOT_EXIST_ERROR, ExpConstants.DATATYPE_NOT_EXIST_MSG + ": '" + alias +"' ,'" + datatype + "' expected, but actually '" +object.getClass().getName() +"' !");
 		}
 		
 	}
@@ -385,14 +516,10 @@ public class Validator implements IValidator{
 		
 		if (object instanceof String) {
 			return "".equals(object);
-		}else if (object instanceof ArrayList) {
-			return ((ArrayList)object).size()==0;
-		}else if (object instanceof LinkedList) {
-			return ((LinkedList)object).size()==0;
-		}else if (object instanceof HashMap) {
-			return ((HashMap)object).size()==0;
-		}else if (object instanceof TreeMap) {
-			return ((TreeMap)object).size()==0;
+		}else if (object instanceof List) {
+			return ((List)object).size()==0;
+		}else if (object instanceof Map) {
+			return ((Map)object).size()==0;
 		}else if (object instanceof Object[]) {
 			return ((Object[])object).length==0;
 		}

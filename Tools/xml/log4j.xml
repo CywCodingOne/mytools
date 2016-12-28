@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">    
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" threshold="null" debug="null" reset="false">      
+    <!-- 输出日志到控制台  ConsoleAppender -->   
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">  
+    <param name="Threshold" value="info"></param>
+    <!-- <param name="Encoding" value="UTF8"/> -->
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%p][%d{ISO8601}][%c:%L] %m%n"/>
+    </layout>
+    </appender>  
+  
+    <!-- 输出 error 日志到文件  每天一个文件 -->  
+    <appender name="dailyRollingFile-error"  
+        class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="Threshold" value="error"></param>  
+        <param name="ImmediateFlush" value="true"></param>  
+        <param name="File" value="D:/workspace/java/customtools/Test/logs/error/app-error.log"></param>  
+	    <param name="Encoding" value="UTF8"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] {%c:%L}	%m%n"></param>  
+        </layout>  
+    </appender>   
+    
+    <!-- 输出 warn 日志到文件  每天一个文件 -->  
+    <appender name="dailyRollingFile-warn"  
+        class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="Threshold" value="warn"></param>  
+        <param name="ImmediateFlush" value="true"></param>  
+        <param name="File" value="D:/workspace/java/customtools/Test/logs/warn/app-warn.log"></param>  
+	    <param name="Encoding" value="UTF8"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] {%c:%L}	%m%n"></param>  
+        </layout>
+    </appender>
+    
+    <!-- 输出 info 日志到文件  每天一个文件 -->  
+    <appender name="dailyRollingFile-info"  
+        class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="Threshold" value="info"></param>  
+        <param name="ImmediateFlush" value="true"></param>  
+        <param name="File" value="D:/workspace/java/customtools/Test/logs/info/app-info.log"></param>  
+	    <param name="Encoding" value="UTF8"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] {%c:%L}	%m%n"></param>  
+        </layout>  
+    </appender>
+    
+    <!-- 输出 debug 日志到文件  每天一个文件 -->  
+    <appender name="dailyRollingFile-debug"  
+        class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="Threshold" value="debug"></param>  
+        <param name="ImmediateFlush" value="true"></param>  
+        <param name="File" value="D:/workspace/java/customtools/Test/logs/debug/app-debug.log"></param>  
+	    <param name="Encoding" value="UTF8"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] {%c:%L}	%m%n"></param>  
+        </layout>
+    </appender>
+    
+    <!-- 输出日志到文件  文件大小到达指定尺寸的时候产生一个新的文件 -->  
+    <appender name="railyFile"   
+        class="org.apache.log4j.RollingFileAppender">  
+        <param name="File" value="D:\workspace\java\customtools\Test\logs\railyFile.log"></param>  
+        <param name="ImmediateFlush" value="true"/>  
+        <param name="Threshold" value="info"></param>  
+        <param name="Append" value="true"></param>  
+        <param name="MaxFileSize" value="30KB"></param>  
+        <param name="MaxBackupIndex" value="100"></param>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] {%c:%L}	%m%n"></param>  
+        </layout>  
+    </appender>  
+  
+    <!-- 输出日志到文件 -->  
+    <appender name="file"  
+        class="org.apache.log4j.FileAppender">  
+        <param name="File" value="D:\workspace\java\customtools\Test\logs\file.log"></param>  
+        <param name="Threshold" value="info"></param>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%t] {%c:%L}-%m%n"></param>  
+        </layout>  
+    </appender>  
+  
+    <!--   
+        定义全局的日志输出级别,但是在输出目的地的配置中配置的具体输出级别优先级高于全局定义的优先级。  
+        如果在railyFile中定义<param name="Threshold" value="info"></param>，那么将会把info以上级别的信息输出  
+     -->  
+    <root>       
+        <priority value="debug" />       
+        <appender-ref ref="dailyRollingFile-error" />
+        <appender-ref ref="dailyRollingFile-warn" />
+        <appender-ref ref="dailyRollingFile-info" />    
+        <appender-ref ref="dailyRollingFile-debug" />
+        <appender-ref ref="console" />    
+       <!--  
+        <appender-ref ref="file" />   
+          -->
+    </root>
+  
+</log4j:configuration>

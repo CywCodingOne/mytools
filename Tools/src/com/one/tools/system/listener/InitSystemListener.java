@@ -6,6 +6,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
 
+import com.one.tools.system.SystemInfo;
 import com.one.tools.system.SystemInitialor;
 
 public class InitSystemListener implements ServletContextListener {
@@ -30,7 +31,7 @@ public class InitSystemListener implements ServletContextListener {
 		
 		ServletContext servletContext = servletContextEvent.getServletContext();
 		SystemInitialor.init(servletContext);
-		logger.info(""+SystemInitialor.getSystemInfo().toString());
+		logger.info(""+SystemInfo.getInstance().toString());
 		
 		logger.info("init system end !");
 		logger.info("**************************************");

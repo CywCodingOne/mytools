@@ -23,4 +23,7 @@ public class ExpConstants {
 	public static final String DATATYPE_MATCH_ERROR = "20006";
 	public static final String DATATYPE_MATCH_MSG = "数据类型校验失败";
 	
+	public static final String DATATYPE_NOT_EXIST_ERROR = "20007";
+	public static final String DATATYPE_NOT_EXIST_MSG = "指定的数据类型不存在或不合法或不在可校验范围之内";
+	
 }
